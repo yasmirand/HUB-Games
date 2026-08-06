@@ -121,4 +121,3 @@ while True:
             pontos += 1
             placar.clear()
             placar.write(f"Pontos: {pontos}", align="center", font=("Impact", 20, "normal"))
-
