@@ -1,6 +1,8 @@
 '''
-* Yasmin Miranda
-* Aula 3 - Movimentação da Nave
+Desafio 1: Substituição de Assets e Recalibragem de Borda: 
+Baixar desenhos , imagens na extensão .GIF e substituir a tela de fundo bem como o ator ("nave")
+Verificar a necessidade de definir novo limite de tela dependendo do tamanho do objeto.
+Anexar Link do Drive ou github com o material.
 '''
 # Import
 import turtle
@@ -8,12 +10,14 @@ import turtle
 # Janela
 janela = turtle.Screen()
 janela.title("Gamezinho")
-janela.bgcolor("#ffaedd")
+janela.bgpic("gif/espaco.gif")
 janela.setup(width=800, height=600)
 
 #nave
 nave = turtle.Turtle()
-nave.shape("turtle")
+janela.addshape("gif/nave.gif")
+nave.shape("gif/nave.gif")
+
 nave.color("#cb85f3")
 nave.penup() #não deixa linha
 nave.setheading(90) #apontando pra cima
