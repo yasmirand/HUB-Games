@@ -1,13 +1,15 @@
 '''
-Colisão de Game Over (Nave x Inimigo) - 
-Encerrar o jogo ou exibir "Game Over" na tela caso a distância entre a nave e o inimigo seja menor que 20.
+Sistema de Vidas e Penalidade 
+Criar a variável vidas = 3. Se o inimigo encostar na nave perde 1 de vida.
 '''
 
 # Import
 import turtle
 import math #faz calculos
 import random #sorteia numeros pseudoaleatórios
+from PIL import Image, ImageTk, ImageSequence
 
+Image.MAX_IMAGE_PIXELS = None
 # Janela
 janela = turtle.Screen()
 janela.title("Gamezinho")
@@ -25,10 +27,11 @@ nave.penup() #não deixa linha
 nave.setheading(90) #apontando pra cima
 nave.goto(0, -240) #posição
 
+
 #inimigo
 inimigo = turtle.Turtle()
-inimigo.shape("circle")
-inimigo.color("red")
+janela.addshape("gif/pedra.gif")
+inimigo.shape("gif/pedra.gif")
 inimigo.penup()
 inimigo.goto(random.randint(-360, 360), 280) # o X é aleatório, de -360 a 360, o Y é 280
 inimigo_vel = 0.05
@@ -51,8 +54,18 @@ placar.speed(0)
 placar.color("#7947c9")
 placar.penup()
 placar.hideturtle()
-placar.goto(-315, 230)
-placar.write(f"Pontos:{pontos}", align="center", font=("Impact", 20, "normal")) # escreve
+placar.goto(-340, 230)
+placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal")) # escreve
+
+#vidas
+vida = 3
+vidas = turtle.Turtle()
+vidas.speed(0)
+vidas.color("#7947c9")
+vidas.penup()
+vidas.hideturtle()
+vidas.goto(-340, 200)
+vidas.write(f"Vidas: {vida}", align="left", font=("Impact", 20, "normal"))
 
 #movimentos
 def vaiEsquerda():
@@ -100,6 +113,7 @@ janela.onkeypress(vaiLaser, "space")
 
 while True:
     janela.update() #forçar o sistema a atualizar a janela imediatamente. 
+
     inimigo.sety(inimigo.ycor() - inimigo_vel)
     if inimigo.ycor() < -290:
         inimigo.goto(random.randint(-360, 360), 280)
@@ -120,30 +134,37 @@ while True:
             #Pontuação
             pontos += 1
             placar.clear()
-            placar.write(f"Pontos: {pontos}", align="center", font=("Impact", 20, "normal"))
+            placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
             
     dInimigo = math.sqrt((nave.xcor() - inimigo.xcor()) ** 2 + (nave.ycor() - inimigo.ycor())**2)
     if dInimigo < 20:
-        nave.hideturtle()
-        laser.hideturtle()
-        inimigo.hideturtle()
+        vida -= 1
+        vidas.clear()
+        vidas.write(f"Vidas: {vida}", align="left", font=("Impact", 20, "normal"))
+        inimigo.goto(random.randint(-360, 360), 280)
+        
+        if vida <= 0:
+            nave.hideturtle()
+            laser.hideturtle()
+            inimigo.hideturtle()
+            vidas.hideturtle()
+            
+            #Game Over
+            fim = turtle.Turtle()
+            fim.speed(0)
+            fim.color("#7947c9")
+            fim.penup()
+            fim.hideturtle()
+            fim.goto(0, 0)
+            fim.write(f"GAME OVER", align="center", font=("Impact", 80, "normal")) # escreve
 
-        #Game Over
-        fim = turtle.Turtle()
-        fim.speed(0)
-        fim.color("#7947c9")
-        fim.penup()
-        fim.hideturtle()
-        fim.goto(0, 0)
-        fim.write(f"GAME OVER", align="center", font=("Impact", 80, "normal")) # escreve
+            fim.showturtle()
+            placar.clear() # Limpa o placar lá do topo da tela
+            placar.goto(0, -40) # Coloca o placar um pouco abaixo do Game Over
+            placar.write(f"Pontuação Final: {pontos}", align="center", font=("Impact", 24, "normal"))
 
-        fim.showturtle()
-        placar.clear() # Limpa o placar lá do topo da tela
-        placar.goto(0, -40) # Coloca o placar um pouco abaixo do Game Over
-        placar.write(f"Pontuação Final: {pontos}", align="center", font=("Impact", 24, "normal"))
-
-        janela.update()
-        break # Sai do loop do jogo
+            janela.update()
+            break # Sai do loop do jogo
 
 # Mantém a janela aberta aguardando a ação de fechar do usuário
 janela.mainloop()
