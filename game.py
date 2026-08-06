@@ -144,13 +144,15 @@ while True:
         inimigo.goto(random.randint(-360, 360), 280)
         
         if vida <= 0:
+            vidas.clear() 
             nave.hideturtle()
             laser.hideturtle()
             inimigo.hideturtle()
             vidas.hideturtle()
-            
+
             #Game Over
             fim = turtle.Turtle()
+            fim.shape("blank") # <-- CORREÇÃO: Remove o formato de triângulo padrão do Turtle
             fim.speed(0)
             fim.color("#7947c9")
             fim.penup()
