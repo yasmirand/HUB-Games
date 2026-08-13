@@ -7,7 +7,7 @@ Criar a variável vidas = 3. Se o inimigo encostar na nave perde 1 de vida.
 import turtle
 import math #faz calculos
 import random #sorteia numeros pseudoaleatórios
-from PIL import Image, ImageTk, ImageSequence
+from PIL import Image
 
 Image.MAX_IMAGE_PIXELS = None
 # Janela
@@ -51,7 +51,7 @@ laser_estado = "pronto"
 pontos = 0
 placar = turtle.Turtle()
 placar.speed(0)
-placar.color("#7947c9")
+placar.color("#8d4387")
 placar.penup()
 placar.hideturtle()
 placar.goto(-340, 230)
@@ -61,7 +61,7 @@ placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal")) #
 vida = 3
 vidas = turtle.Turtle()
 vidas.speed(0)
-vidas.color("#7947c9")
+vidas.color("#8d4387")
 vidas.penup()
 vidas.hideturtle()
 vidas.goto(-340, 200)
@@ -154,7 +154,7 @@ while True:
             fim = turtle.Turtle()
             fim.shape("blank") # <-- CORREÇÃO: Remove o formato de triângulo padrão do Turtle
             fim.speed(0)
-            fim.color("#7947c9")
+            fim.color("#8d4387")
             fim.penup()
             fim.hideturtle()
             fim.goto(0, 0)
