@@ -10,13 +10,32 @@ import random #sorteia numeros pseudoaleatórios
 from PIL import Image
 
 Image.MAX_IMAGE_PIXELS = None
+LARGURA = 800
+ALTURA = 600
 # Janela
 janela = turtle.Screen()
 janela.title("Gamezinho")
 janela.bgpic("gif/espaco.gif")
 janela.bgcolor("black")
-janela.setup(width=800, height=600)
+janela.setup(width=LARGURA, height=ALTURA)
 janela.tracer(0)
+
+
+#estrelas mechendo em parallax
+estrelas = []  # Lista que vai guardar todos os objetos de estrelas
+for _ in range(50):  # Cria 50 estrelas para o fundo
+    estrela = turtle.Turtle()  # Cria um novo objeto Turtle para a estrela
+    estrela.shape("circle")  # Define a forma da estrela como um círculo
+    estrela.color("white")  # Define a cor da estrela como branca
+    estrela.penup()  # Desativa o rastro da caneta
+    tam = random.uniform(0.05, 0.25)  # Gera um tamanho aleatório para dar sensação de profundidade
+    estrela.shapesize(stretch_wid=tam, stretch_len=tam)  # Aplica o tamanho na estrela
+    estrela.velocidade = tam * 7  # Define a velocidade com base no tamanho (Efeito Parallax)
+    
+    # IMPORTANTE: X usa LARGURA e Y usa ALTURA
+    estrela.goto(random.randint(-LARGURA // 2 + 10, LARGURA // 2 - 10),  # Posiciona a estrela em X aleatório
+                 random.randint(-ALTURA // 2 + 20, ALTURA // 2 - 20))  # Posiciona a estrela em Y aleatório
+    estrelas.append(estrela)  # Adiciona a estrela criada na lista de estrelas
 
 #nave
 nave = turtle.Turtle()
@@ -34,7 +53,7 @@ janela.addshape("gif/pedra.gif")
 inimigo.shape("gif/pedra.gif")
 inimigo.penup()
 inimigo.goto(random.randint(-360, 360), 280) # o X é aleatório, de -360 a 360, o Y é 280
-inimigo_vel = 0.05
+inimigo_vel = 0.3
 
 #laser
 laser = turtle.Turtle()
@@ -44,7 +63,7 @@ laser.color("pink")
 laser.shapesize(stretch_wid=1, stretch_len=0.2)
 laser.penup()
 laser.hideturtle() #esconde
-laser_vel = 0.5
+laser_vel = 3
 laser_estado = "pronto"
 
 #placar
@@ -113,6 +132,16 @@ janela.onkeypress(vaiLaser, "space")
 
 while True:
     janela.update() #forçar o sistema a atualizar a janela imediatamente. 
+
+    for estrela in estrelas:  # Para cada estrela da lista
+    # Altera o eixo Y (vertical) subtraindo a velocidade para ir para baixo
+        estrela.sety(estrela.ycor() - estrela.velocidade)  
+        
+        # Se a estrela sair da tela pela borda inferior (baixo)
+        if estrela.ycor() < -ALTURA // 2:  
+            # Reposiciona no topo (ALTURA // 2) com um X (horizontal) aleatório
+            estrela.goto(random.randint(-LARGURA // 2 + 10, LARGURA // 2 - 10), ALTURA // 2)
+
 
     inimigo.sety(inimigo.ycor() - inimigo_vel)
     if inimigo.ycor() < -290:
