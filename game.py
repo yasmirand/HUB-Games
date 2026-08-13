@@ -212,9 +212,7 @@ while True:
                 placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
 
             elif pontos == 25 and fase == 5:
-                fase+=1
                 inimigo_vel += 0.25
-                pontos = 0
                 fases.clear()
                 fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
                 placar.clear()
