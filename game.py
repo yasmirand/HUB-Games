@@ -8,6 +8,22 @@ import turtle
 import math #faz calculos
 import random #sorteia numeros pseudoaleatórios
 from PIL import Image
+import pygame
+
+# --- SISTEMA DE ÁUDIO (EFEITOS SONOROS E MÚSICA TEMA) ---
+pygame.mixer.init()  # Inicializa o sistema de som do Pygame
+
+try:
+    som_tiro = pygame.mixer.Sound("sons/laser.mp3")  # Carrega o efeito sonoro do laser/tiro
+except pygame.error:
+    print("Aviso: Arquivo 'tiro.mp3' não encontrado. O jogo seguirá sem som de tiro.")  # Mensagem de aviso
+    som_tiro = None  # Marca que não há som de tiro disponível
+
+try:
+    som_gameover = pygame.mixer.Sound("sons/gameover.mp3")  # Carrega o efeito sonoro de Game Over
+except pygame.error:
+    print("Aviso: Arquivo 'gameover.wav' não encontrado. O jogo seguirá sem som de Game Over.")  # Mensagem de aviso
+    som_gameover = None  # Marca que não há som de Game Over disponível
 
 Image.MAX_IMAGE_PIXELS = None
 LARGURA = 800
@@ -68,6 +84,7 @@ laser_vel = 3
 laser_estado = "pronto"
 
 #placar
+pontosf = 0
 pontos = 0
 placar = turtle.Turtle()
 placar.speed(0)
@@ -120,6 +137,8 @@ def vaiLaser():
         laser_estado = "disparado"
         laser.goto(nave.xcor(), nave.ycor()+10)
         laser.showturtle() #mostra
+        if som_tiro:
+            som_tiro.play()
 
 
 #mapear teclas
@@ -143,7 +162,7 @@ janela.onkeypress(vaiLaser, "space")
 
 while True:
     janela.update() #forçar o sistema a atualizar a janela imediatamente. 
-
+    p = 0
     for estrela in estrelas:  # Para cada estrela da lista
     # Altera o eixo Y (vertical) subtraindo a velocidade para ir para baixo
         estrela.sety(estrela.ycor() - estrela.velocidade)  
@@ -173,7 +192,7 @@ while True:
 
             #Pontuação
             pontos += 1
-
+            pontosf+=1
             #fases
             if pontos == 5 and fase == 1:
                 fase+=1
@@ -203,6 +222,7 @@ while True:
                 placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
 
             elif pontos == 20 and fase == 4:
+                p = pontos
                 fase+=1
                 inimigo_vel += 0.25
                 pontos = 0
@@ -210,11 +230,11 @@ while True:
                 fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
                 placar.clear()
                 placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+                
 
-            elif pontos == 25 and fase == 5:
-                fase+=1
-                inimigo_vel += 0.25
-                pontos = 0
+            elif pontos-5 == p and fase == 5:
+                inimigo_vel += 0.3
+                p = pontos
                 fases.clear()
                 fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
                 placar.clear()
@@ -237,6 +257,11 @@ while True:
             inimigo.hideturtle()
             vidas.hideturtle()
             fases.hideturtle()
+            
+
+            pygame.mixer.music.stop()  # Interrompe a música tema
+            if som_gameover:  # Se o som de Game Over foi carregado com sucesso
+                som_gameover.play()  # Toca o efeito sonoro de Game Over
 
             #Game Over
             fim = turtle.Turtle()
@@ -251,10 +276,10 @@ while True:
             fim.showturtle()
             placar.clear() # Limpa o placar lá do topo da tela
             placar.goto(0, -40) # Coloca o placar um pouco abaixo do Game Over
-            placar.write(f"Pontuação Final: {pontos}", align="center", font=("Impact", 24, "normal"))
+            placar.write(f"Pontuação Final: {pontosf}", align="center", font=("Impact", 24, "normal"))
             fases.clear() # Limpa o placar lá do topo da tela
             fases.goto(0, -70) # Coloca o placar um pouco abaixo do Game Over
-            fases.write(f"Fase: {pontos}", align="center", font=("Impact", 24, "normal"))
+            fases.write(f"Fase: {fase}", align="center", font=("Impact", 24, "normal"))
 
             janela.update()
             break # Sai do loop do jogo
