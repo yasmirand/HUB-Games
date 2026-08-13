@@ -12,6 +12,7 @@ from PIL import Image
 Image.MAX_IMAGE_PIXELS = None
 LARGURA = 800
 ALTURA = 600
+
 # Janela
 janela = turtle.Screen()
 janela.title("Gamezinho")
@@ -85,6 +86,16 @@ vidas.penup()
 vidas.hideturtle()
 vidas.goto(-340, 200)
 vidas.write(f"Vidas: {vida}", align="left", font=("Impact", 20, "normal"))
+
+#fases
+fase = 1
+fases = turtle.Turtle()
+fases.speed(0)
+fases.color("#8d4387")
+fases.penup()
+fases.hideturtle()
+fases.goto(-340, 170)
+fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
 
 #movimentos
 def vaiEsquerda():
@@ -162,6 +173,53 @@ while True:
 
             #Pontuação
             pontos += 1
+
+            #fases
+            if pontos == 5 and fase == 1:
+                fase+=1
+                inimigo_vel += 0.25
+                pontos = 0
+                fases.clear()
+                fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
+                placar.clear()
+                placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+
+            elif pontos == 10 and fase == 2:
+                fase+=1
+                inimigo_vel += 0.25
+                pontos = 0
+                fases.clear()
+                fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
+                placar.clear()
+                placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+
+            elif pontos == 15 and fase == 3:
+                fase+=1
+                inimigo_vel += 0.25
+                pontos = 0
+                fases.clear()
+                fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
+                placar.clear()
+                placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+
+            elif pontos == 20 and fase == 4:
+                fase+=1
+                inimigo_vel += 0.25
+                pontos = 0
+                fases.clear()
+                fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
+                placar.clear()
+                placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+
+            elif pontos == 25 and fase == 5:
+                fase+=1
+                inimigo_vel += 0.25
+                pontos = 0
+                fases.clear()
+                fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
+                placar.clear()
+                placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+            
             placar.clear()
             placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
             
@@ -178,6 +236,7 @@ while True:
             laser.hideturtle()
             inimigo.hideturtle()
             vidas.hideturtle()
+            fases.hideturtle()
 
             #Game Over
             fim = turtle.Turtle()
@@ -193,6 +252,9 @@ while True:
             placar.clear() # Limpa o placar lá do topo da tela
             placar.goto(0, -40) # Coloca o placar um pouco abaixo do Game Over
             placar.write(f"Pontuação Final: {pontos}", align="center", font=("Impact", 24, "normal"))
+            fases.clear() # Limpa o placar lá do topo da tela
+            fases.goto(0, -70) # Coloca o placar um pouco abaixo do Game Over
+            fases.write(f"Fase: {pontos}", align="center", font=("Impact", 24, "normal"))
 
             janela.update()
             break # Sai do loop do jogo
