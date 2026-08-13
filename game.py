@@ -68,6 +68,7 @@ laser_vel = 3
 laser_estado = "pronto"
 
 #placar
+pontosf = 0
 pontos = 0
 placar = turtle.Turtle()
 placar.speed(0)
@@ -143,7 +144,7 @@ janela.onkeypress(vaiLaser, "space")
 
 while True:
     janela.update() #forçar o sistema a atualizar a janela imediatamente. 
-
+    p = 0
     for estrela in estrelas:  # Para cada estrela da lista
     # Altera o eixo Y (vertical) subtraindo a velocidade para ir para baixo
         estrela.sety(estrela.ycor() - estrela.velocidade)  
@@ -173,7 +174,7 @@ while True:
 
             #Pontuação
             pontos += 1
-
+            pontosf+=1
             #fases
             if pontos == 5 and fase == 1:
                 fase+=1
@@ -203,6 +204,7 @@ while True:
                 placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
 
             elif pontos == 20 and fase == 4:
+                p = pontos
                 fase+=1
                 inimigo_vel += 0.25
                 pontos = 0
@@ -210,9 +212,11 @@ while True:
                 fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
                 placar.clear()
                 placar.write(f"Pontos: {pontos}", align="left", font=("Impact", 20, "normal"))
+                
 
-            elif pontos == 25 and fase == 5:
-                inimigo_vel += 0.25
+            elif pontos-5 == p and fase == 5:
+                inimigo_vel += 0.3
+                p = pontos
                 fases.clear()
                 fases.write(f"Fase: {fase}", align="left", font=("Impact", 20, "normal"))
                 placar.clear()
@@ -249,10 +253,10 @@ while True:
             fim.showturtle()
             placar.clear() # Limpa o placar lá do topo da tela
             placar.goto(0, -40) # Coloca o placar um pouco abaixo do Game Over
-            placar.write(f"Pontuação Final: {pontos}", align="center", font=("Impact", 24, "normal"))
+            placar.write(f"Pontuação Final: {pontosf}", align="center", font=("Impact", 24, "normal"))
             fases.clear() # Limpa o placar lá do topo da tela
             fases.goto(0, -70) # Coloca o placar um pouco abaixo do Game Over
-            fases.write(f"Fase: {pontos}", align="center", font=("Impact", 24, "normal"))
+            fases.write(f"Fase: {fase}", align="center", font=("Impact", 24, "normal"))
 
             janela.update()
             break # Sai do loop do jogo
